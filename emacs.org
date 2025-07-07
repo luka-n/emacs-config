@@ -45,8 +45,6 @@
       - [[#git-status-and-more-colors][Git Status and More Colors]]
       - [[#inline-subtree-navigation][Inline Subtree Navigation]]
     - [[#tramp][TRAMP]]
-  - [[#keys][Keys]]
-    - [[#completion-1][Completion]]
   - [[#languages--major-modes][Languages / Major Modes]]
     - [[#cc][C/C++]]
       - [[#function-arguments][Function Arguments]]
@@ -58,7 +56,6 @@
     - [[#emacs-lisp][Emacs Lisp]]
       - [[#common-lisp-compatibility][Common Lisp Compatibility]]
       - [[#function-arguments-2][Function Arguments]]
-    - [[#gherkin][Gherkin]]
     - [[#haml][HAML]]
     - [[#html][HTML]]
     - [[#javascript][JavaScript]]
@@ -240,8 +237,7 @@ Include current buffer name in frame title.
 #+END_SRC
 *** Line Numbers
 #+BEGIN_SRC emacs-lisp
-  (use-package linum-mode
-    :hook prog-mode)
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 #+END_SRC
 *** Mode Line
 Show also the column number besides the line number in mode line.
@@ -291,7 +287,6 @@ Use anzu to show search status.
     :init
     (setq helm-split-window-default-side 'same)
     :config
-    (require 'helm-config)
     (helm-mode))
 #+END_SRC
 
@@ -537,14 +532,7 @@ Define a special Ace Jump command to jump to parens.
 Let's not litter dired buffers everywhere; reuse current buffer.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package dired-single
-    :after dired
-    :config
-    (define-key dired-mode-map [return] 'dired-single-buffer)
-    (define-key dired-mode-map [mouse-1] 'dired-single-buffer-mouse)
-    (define-key dired-mode-map "^"
-      (function
-       (lambda () (interactive) (dired-single-buffer "..")))))
+  (setq dired-kill-when-opening-new-dired-buffer t)
 #+END_SRC
 **** Git Status and More Colors
 Might have issues cleaning up its locks. See--
@@ -568,16 +556,6 @@ https://github.com/syohex/emacs-dired-k/issues/45
 *** TRAMP
 #+BEGIN_SRC emacs-lisp
   (setq tramp-default-method "ssh")
-#+END_SRC
-** Keys
-*** Completion
-Popup possible completions for incomplete key commands.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package which-key
-    :diminish which-key-mode
-    :config
-    (which-key-mode))
 #+END_SRC
 ** Languages / Major Modes
 *** C/C++
@@ -647,10 +625,6 @@ Along with SLIME navigation.
     :diminish eldoc-mode
     :hook
     (emacs-lisp-mode . eldoc-mode))
-#+END_SRC
-*** Gherkin
-#+BEGIN_SRC emacs-lisp
-  (use-package feature-mode)
 #+END_SRC
 *** HAML
 #+BEGIN_SRC emacs-lisp
