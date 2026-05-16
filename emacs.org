@@ -155,6 +155,37 @@ Add BBDB for contact management.
     (bbdb-mua-auto-update-init 'gnus 'message))
 #+END_SRC
 *** Org
+Keys to toggle shown tree depth.
+
+#+BEGIN_SRC emacs-lisp
+  (defun org-content-1 () (interactive) (org-content 1))
+  (defun org-content-2 () (interactive) (org-content 2))
+  (defun org-content-3 () (interactive) (org-content 3))
+  (defun org-content-4 () (interactive) (org-content 4))
+
+  (define-key org-mode-map (kbd "M-1") 'org-content-1)
+  (define-key org-mode-map (kbd "M-2") 'org-content-2)
+  (define-key org-mode-map (kbd "M-3") 'org-content-3)
+  (define-key org-mode-map (kbd "M-4") 'org-content-4)
+#+END_SRC
+
+Look deeper.
+
+#+BEGIN_SRC emacs-lisp
+  (setq org-imenu-depth 4)
+#+END_SRC
+
+I use C-<tab> for window switching.
+
+#+BEGIN_SRC emacs-lisp
+  (define-key org-mode-map (kbd "C-<tab>") nil)
+#+END_SRC
+
+Some mouse support is nice.
+
+#+BEGIN_SRC emacs-lisp
+  (require 'org-mouse)
+#+END_SRC
 **** Agenda
 #+BEGIN_SRC emacs-lisp
   (setq org-agenda-files `(,org-directory))
@@ -246,16 +277,12 @@ Show also the column number besides the line number in mode line.
   (setq column-number-mode t)
 #+END_SRC
 
-Pretty pretty spaceline.
+Pretty pretty doom modeline.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package spaceline
-    :config
-    (require 'spaceline-config)
-    (spaceline-spacemacs-theme)
-    (spaceline-toggle-buffer-encoding-abbrev-off)
-    (spaceline-toggle-buffer-size-off)
-    (spaceline-toggle-hud-off))
+  (use-package doom-modeline
+    :ensure t
+    :init (doom-modeline-mode 1))
 #+END_SRC
 
 Use anzu to show search status.
@@ -299,9 +326,16 @@ Also throw in helm-descbinds:
 #+END_SRC
 *** Theme
 #+BEGIN_SRC emacs-lisp
-  (use-package cyberpunk-theme
+  (use-package doom-themes
+    :ensure t
+    :custom
+    (doom-themes-treemacs-theme "doom-colors")
     :config
-    (load-theme 'cyberpunk t))
+    (load-theme 'doom-outrun-electric t)
+
+    (doom-themes-visual-bell-config)
+    (doom-themes-treemacs-config)
+    (doom-themes-org-config))
 #+END_SRC
 *** Toolbars
 No, please, and thank you.
@@ -522,6 +556,8 @@ Define a special Ace Jump command to jump to parens.
     (setq whitespace-line-column 80       ; use fill-column
           whitespace-style
           '(face trailing lines-tail empty tabs tab-mark))
+    :bind
+    (("C-c w" . whitespace-cleanup))
     :hook
     (prog-mode . whitespace-mode)
     :custom-face
