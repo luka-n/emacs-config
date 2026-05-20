@@ -246,6 +246,16 @@ Some more unrelated settings--
         uniquify-buffer-name-style 'forward
         mouse-yank-at-point t)
 #+END_SRC
+
+Enable narrowing to region.
+
+#+BEGIN_SRC emacs-lisp
+  (put 'narrow-to-region 'disabled nil)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (diminish 'auto-revert-mode)
+#+END_SRC
 ** Buffer Management
 Use Ibuffer.
 
@@ -369,6 +379,16 @@ That goes for you too, Org Mode!
 
 #+BEGIN_SRC emacs-lisp
   (setq org-src-window-setup 'current-window)
+#+END_SRC
+
+Dim unfocused windows (not really, it dims buffers, but hey).
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dimmer
+    :init
+    (setq dimmer-fraction 0.42)
+    :config
+    (dimmer-mode))
 #+END_SRC
 *** Zooming
 I just want a global zoom, why so difficult?
@@ -545,6 +565,8 @@ Define a special Ace Jump command to jump to parens.
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :diminish undo-tree-mode
+    :init
+    (setq undo-tree-auto-save-history nil)
     :config
     (global-undo-tree-mode))
 #+END_SRC
@@ -715,6 +737,8 @@ Use rjsx-mode for this, for now. Works better than js2-jsx-mode.
 *** Ruby
 #+BEGIN_SRC emacs-lisp
   (use-package ruby-mode
+    :init
+    (setq ruby-insert-encoding-magic-comment nil)
     :mode
     ("Capfile\\'"
      "Gemfile\\'"
@@ -753,6 +777,7 @@ Use rjsx-mode for this, for now. Works better than js2-jsx-mode.
 **** Rubocop
 #+BEGIN_SRC emacs-lisp
   (use-package rubocop
+    :diminish rubocop-mode
     :hook (ruby-mode . rubocop-mode))
 #+END_SRC
 *** Shell
@@ -784,6 +809,16 @@ Definitely use with Helm.
   (use-package helm-projectile
     :config
     (helm-projectile-on))
+#+END_SRC
+
+I don't know where else to put this...
+
+#+BEGIN_SRC emacs-lisp
+  (use-package direnv
+    :init
+    (setq direnv-always-show-summary nil)
+    :config
+    (direnv-mode))
 #+END_SRC
 ** Session Management
 Remember things.
@@ -843,6 +878,8 @@ Remember things.
 *** Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
+    :init
+    (setq magit-delete-by-moving-to-trash nil)
     :config
     (define-key magit-mode-map [C-tab] nil))
 #+END_SRC
