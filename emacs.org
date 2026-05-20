@@ -22,6 +22,7 @@
     - [[#line-numbers][Line Numbers]]
     - [[#mode-line][Mode Line]]
     - [[#selection][Selection]]
+    - [[#tabs][Tabs]]
     - [[#theme][Theme]]
     - [[#toolbars][Toolbars]]
     - [[#windows][Windows]]
@@ -333,6 +334,20 @@ Also throw in helm-descbinds:
   (use-package helm-descbinds
     :config
     (helm-descbinds-mode))
+#+END_SRC
+*** Tabs
+#+BEGIN_SRC emacs-lisp
+  (use-package centaur-tabs
+    :init
+    (setq centaur-tabs-cycle-scope 'tabs
+          centaur-tabs-icon-type 'nerd-icons
+          centaur-tabs-set-icons t
+          centaur-tabs-set-modified-marker t)
+    :bind
+    ("C-," . centaur-tabs-backward)
+    ("C-." . centaur-tabs-forward)
+    :config
+    (centaur-tabs-mode))
 #+END_SRC
 *** Theme
 #+BEGIN_SRC emacs-lisp
